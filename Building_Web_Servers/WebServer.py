@@ -1,11 +1,12 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-from socket import * 
-import time
+import http.server
 import os
+import ssl
 
 serverName = '127.0.0.1'
 serverPortHTTP = 8000 #for base HTTP
 serverPortHTTPS = 4443 #for HTTPS
+isHTTPS = True
 
 #file = open('WebResume.html', 'w')
 
@@ -67,5 +68,27 @@ class WebServer(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(f"Successfully saved tracking payload to: {filename}\n".encode('utf-8'))
         
-        #make the PUT methods
-    
+    def end_headers(self):
+        self.send_header('Cache-Control', 'public, max-age=20')
+
+def Active_Server():
+    serverAddress = (serverName, serverPortHTTPS)
+
+    Http = http.server.HTTPServer(serverAddress, WebServer)
+
+    if isHTTPS:
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.load_cert_chain(certfile='cert.pem', keyfile='key.pem')
+        Http.socket = context.wrap_socket(Http.socket, server_side=True)
+        print(f"HTTPS server is running at host:{serverName}, port:{serverPortHTTPS}")
+    else:
+        print(f"Running regular HTTP at host:{serverName}, port:{serverPortHTTP}")
+
+    try:
+        Http.serve_forever()
+    except KeyboardInterrupt:
+        print("Shutting down")
+        Http.server_close()
+
+if __name__ == '__main__':
+    Active_Server()
