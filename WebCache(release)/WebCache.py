@@ -6,7 +6,7 @@ import json
 import ssl
 import hashlib
 
-Server_IP = '127.0.0.1'
+Server_IP = '0.0.0.0'
 Cache_port = 8080
 Web_port_http = 8000
 Web_port_https = 4443
