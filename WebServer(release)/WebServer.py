@@ -70,6 +70,7 @@ class WebServer(SimpleHTTPRequestHandler):
         
     def end_headers(self):
         self.send_header('Cache-Control', 'public, max-age=20')
+        super().end_headers()
 
 def Active_Server():
     serverAddress = (serverName, serverPortHTTPS)
