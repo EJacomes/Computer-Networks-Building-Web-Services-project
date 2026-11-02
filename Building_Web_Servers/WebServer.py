@@ -3,7 +3,7 @@ import http.server
 import os
 import ssl
 
-serverName = '127.0.0.1'
+serverName = '0.0.0.0'
 serverPortHTTP = 8000 #for base HTTP
 serverPortHTTPS = 4443 #for HTTPS
 isHTTPS = True
